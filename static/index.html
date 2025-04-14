@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eBay Assistant</title>
+  <style>
+    /* Overall Page Layout */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #f7f7f7;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #1c1c1c;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+    .logo {
+      width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .nav-button {
+      width: 80%;
+      padding: 12px;
+      margin: 8px 0;
+      background: #2d2d2d;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+    }
+    .nav-button:hover {
+      background: #3c3c3c;
+    }
+    .nav-button.active {
+      background: #575757;
+    }
+    .nav-button i {
+      margin-right: 12px; /* spacing between icon and text */
+    }
+
+    /* Main Chat Area */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    /* Chat Header (Mode Label) */
+    .chat-header {
+      background: #f7f7f7;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Chat Window */
+    .chat-window {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Chat Bubbles */
+    .message {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 15px;
+    }
+    .message .avatar {
+      width: 40px;
+      height: 40px;
+      margin: 0 8px;
+    }
+    .message .bubble {
+      max-width: 60%;
+      padding: 12px;
+      border-radius: 10px;
+      line-height: 1.4;
+    }
+
+    /* Assistant (on the left) */
+    .message.assistant {
+      justify-content: flex-start;
+    }
+    .message.assistant .bubble {
+      background-color: #ebebeb;
+      color: #333;
+      margin-left: 8px;
+      border-top-left-radius: 0;
+    }
+
+    /* User (on the right) */
+    .message.user {
+      justify-content: flex-end;
+    }
+    .message.user .bubble {
+      background-color: #4eabf8;
+      color: #fff;
+      margin-right: 8px;
+      border-top-right-radius: 0;
+    }
+
+    /* Input Area */
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ccc;
+      background: #f7f7f7;
+    }
+    .input-area input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      font-size: 14px;
+    }
+    .input-area button {
+      width: 80px;
+      border: none;
+      background: #4eabf8;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .input-area button:hover {
+      background: #409ae1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- eBay Logo -->
+    <img src="ebay_logo.png" alt="eBay Logo" class="logo">
+    <!-- Chat Mode Button -->
+    <button id="chatModeBtn" class="nav-button active">
+      <i class="fa fa-comment"></i> Chat Mode
+    </button>
+    <!-- Shopping Mode Button -->
+    <button id="shoppingModeBtn" class="nav-button">
+      <i class="fa fa-shopping-bag"></i> Shopping Mode
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Optional Header for Current Mode -->
+    <div id="chatHeader" class="chat-header">
+      Chat Mode
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chatWindow" class="chat-window">
+      <!-- Messages will appear here -->
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <input id="messageInput" type="text" placeholder="Type your message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    let currentMode = "chat"; // "chat" or "shopping"
+    const chatWindow = document.getElementById("chatWindow");
+    const chatHeader = document.getElementById("chatHeader");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const chatModeBtn = document.getElementById("chatModeBtn");
+    const shoppingModeBtn = document.getElementById("shoppingModeBtn");
+
+    // Initialize chat history as empty. Back end will prepend the system message.
+    let chatHistory = [];
+
+    // Add a message bubble to the chat
+    function addMessage(text, sender) {
+      // Create container
+      const msgDiv = document.createElement("div");
+      msgDiv.classList.add("message", sender);
+
+      // Avatar
+      const avatarImg = document.createElement("img");
+      avatarImg.classList.add("avatar");
+
+      if (sender === "assistant") {
+        // Assistant icon
+        avatarImg.src = "shopping_cart.png";
+        avatarImg.alt = "Assistant Icon";
+      } else {
+        // User icon
+        avatarImg.src = "user_icon.png";
+        avatarImg.alt = "User Icon";
+      }
+
+      // Bubble
+      const bubbleDiv = document.createElement("div");
+      bubbleDiv.classList.add("bubble");
+      // Convert newline characters to <br> for line-by-line display
+      const formattedText = text.replace(/\n/g, "<br>");
+      bubbleDiv.innerHTML = formattedText;
+
+      // Append to container
+      msgDiv.appendChild(avatarImg);
+      msgDiv.appendChild(bubbleDiv);
+
+      // Add to chat window
+      chatWindow.appendChild(msgDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    // Send message (depending on current mode)
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      if (!message) return;
+      addMessage(message, "user");
+      messageInput.value = "";
+
+      if (currentMode === "chat") {
+        // General GPT Chat
+        fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, chat_history: chatHistory })
+        })
+        .then(res => res.json())
+        .then(data => {
+          chatHistory = data.chat_history;
+          addMessage(data.response, "assistant");
+        })
+        .catch(err => addMessage("Error: " + err, "assistant"));
+
+      } else {
+        // Shopping Mode (search)
+        const maxPriceStr = prompt("Enter your max price (or leave blank to skip):");
+        let maxPrice = null;
+        if (maxPriceStr && !isNaN(parseFloat(maxPriceStr))) {
+          maxPrice = parseFloat(maxPriceStr);
+        }
+
+        fetch("/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: message,
+            max_price: maxPrice,
+            file_path: "/mnt/data/ebay_cleaned_data.csv"
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.results && data.results.length > 0) {
+            data.results.forEach(product => {
+              // Display the product image from "Main Image"
+              const productHTML = `
+                <strong>${product.Title}</strong> - $${product.Price}<br>
+                Condition: ${product.Condition}<br>
+                Seller: ${product["Seller Name"]} (${product["Seller Feedback %"]}% positive)<br>
+                <a href="${product["Product URL"]}" target="_blank">View Product</a><br><br>
+                ${
+                  product["Main Image"]
+                    ? `<img src="${product["Main Image"]}" alt="Product Image" style="max-width: 150px; margin-top: 8px;">`
+                    : ""
+                }
+              `;
+              addMessage(productHTML, "assistant");
+            });
+          } else {
+            addMessage("No matching products found.", "assistant");
+          }
+        })
+        .catch(err => addMessage("Error: " + err, "assistant"));
+      }
+    }
+
+    // Event Listeners
+    sendBtn.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    // Switch to Chat Mode
+    chatModeBtn.addEventListener("click", () => {
+      currentMode = "chat";
+      chatModeBtn.classList.add("active");
+      shoppingModeBtn.classList.remove("active");
+      chatHeader.textContent = "Chat Mode";
+      chatWindow.innerHTML = ""; // Clear the chat window
+      addMessage("Switched to Chat Mode.", "assistant");
+    });
+
+    // Switch to Shopping Mode
+    shoppingModeBtn.addEventListener("click", () => {
+      currentMode = "shopping";
+      shoppingModeBtn.classList.add("active");
+      chatModeBtn.classList.remove("active");
+      chatHeader.textContent = "Shopping Mode";
+      chatWindow.innerHTML = ""; // Clear the chat window
+      addMessage("Switched to Shopping Mode.", "assistant");
+    });
+  </script>
+
+  <!-- OPTIONAL: If you want to use Font Awesome icons for the buttons -->
+  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+</body>
+</html>

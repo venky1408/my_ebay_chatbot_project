@@ -1,0 +1,9 @@
+Flask
+requests
+nltk
+scikit-learn
+sentence-transformers		# For semantic search (if using vec2vec.py)
+hdbscan                  	# For clustering in semantic search
+faiss-cpu                 	# For FAISS indexing
+openai                   	# For GPT integration
+ipywidgets                	# If using the Jupyter Notebook version

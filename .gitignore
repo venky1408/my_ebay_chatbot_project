@@ -1,0 +1,31 @@
+# Byte-compiled files / caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# Distribution files
+build/
+dist/
+*.egg-info/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and editor settings
+.vscode/
+.idea/
+
+# Log and temporary files
+*.log
+*.tmp
+*.bak
+
+# Optionally ignore large data files (uncomment if necessary)
+# data/*.csv
