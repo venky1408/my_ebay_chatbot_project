@@ -143,8 +143,7 @@ Contributions are welcome! Please fork the repository, create a feature branch, 
 License
 This project is licensed under the MIT License. See the LICENSE file for full details.
 
-Acknowledgements
-Thanks to the developers of Flask, scikit-learn, nltk, OpenAI, and other libraries used in this project.Special thanks to the eBay developer community and our contributors for their insights and support.
+Acknowledgements: Thanks to the developers of Flask, scikit-learn, nltk, OpenAI, and other libraries used in this project.Special thanks to the eBay developer community and our contributors for their insights and support.
 
 For more detailed project documentation and insights, please refer to our Project Report.
 
