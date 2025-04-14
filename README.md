@@ -90,24 +90,36 @@ my_ebay_chatbot_project/ ├── data/ │ └── Final_updated_ebay_catalo
 See the project report in docs/ebay chatbot report.pdf and sample HTML pages in the static/ folder.
 
 **API Endpoints**
+
 /chat
+
 Accepts: JSON with message and optional chat_history.
 Returns: A GPT-generated response along with updated chat history.
 
 /search
+
 Accepts: JSON with query, optional max_price, and file_path.
 Returns: Top matching products from the catalog.
 
 **Requirements**
-This project requires Python 3.7+ and the following Python libraries: 
+This project requires Python 3.7+ and the following Python libraries:
+
     Flask>=2.0.0
+    
     requests>=2.25.0
+    
     nltk>=3.6.0
+    
     scikit-learn>=0.24.0
+    
     sentence-transformers>=2.2.2
+    
     hdbscan>=0.8.27
+    
     faiss-cpu>=1.7.2
+    
     openai>=0.27.0
+    
     ipywidgets>=7.6.5
 
 Install these with:
