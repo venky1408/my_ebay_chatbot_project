@@ -77,7 +77,7 @@ my_ebay_chatbot_project/ ├── data/ │ └── Final_updated_ebay_catalo
     -Update file paths, API keys, and any hardcoded values in your Flask/Python code (in src/).
     -Make sure Final_updated_ebay_catalog.csv is in the data/ folder.
 
-**Usage**
+**Usage:**
 
     Running the Chatbot:
     Run one of the main Flask applications. For example, to use the TF-IDF and clustering version:
@@ -96,7 +96,7 @@ my_ebay_chatbot_project/ ├── data/ │ └── Final_updated_ebay_catalo
     
 See the project report in docs/ebay chatbot report.pdf and sample HTML pages in the static/ folder.
 
-**API Endpoints**
+**API Endpoints**:
 
 /chat
 
