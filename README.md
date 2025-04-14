@@ -55,38 +55,45 @@ my_ebay_chatbot_project/ ├── data/ │ └── Final_updated_ebay_catalo
 
 ## Installation and Setup
 
-1. **Clone the Repository:**
+**Clone the Repository:**
+
    bash
    git clone https://github.com/venky1408/my_ebay_chatbot_project.git
    cd my_ebay_chatbot_project
 
-2. **Create a Virtual Environment (Recommended):**
+**Create a Virtual Environment (Recommended):**
+   
     bash
     python -m venv venv
     source venv/bin/activate         # On Windows: venv\Scripts\activate
 
-3. **Install Dependencies:**
+**Install Dependencies:**
+
     bash
     py pip install -r requirements.txt
 
-4. **Configure Application:**
+**Configure Application:**
+   
     -Update file paths, API keys, and any hardcoded values in your Flask/Python code (in src/).
     -Make sure Final_updated_ebay_catalog.csv is in the data/ folder.
 
-5. **Usage**
+**Usage**
+
     Running the Chatbot:
     Run one of the main Flask applications. For example, to use the TF-IDF and clustering version:
+   
     bash
     python src/Main\ flask\ code\ -\ tfidf\ and\ clustering.py
     You may also choose other implementations (tfidf.py, vec2vec.py, etc.) depending on your mode.
 
-6. **Accessing the UI:**
+**Accessing the UI:**
 
     -Open your browser and navigate to http://127.0.0.1:5000 to interact with the chatbot.
-    -Switching Modes:
-        -Use the sidebar buttons in the web interface to switch between Chat Mode and Shopping Mode.
+   
+    -Switching Modes: Use the sidebar buttons in the web interface to switch between Chat Mode and Shopping Mode.
 
-7. **Viewing Additional Documentation:**
+**Viewing Additional Documentation:**
+    
 See the project report in docs/ebay chatbot report.pdf and sample HTML pages in the static/ folder.
 
 **API Endpoints**
@@ -94,11 +101,13 @@ See the project report in docs/ebay chatbot report.pdf and sample HTML pages in 
 /chat
 
 Accepts: JSON with message and optional chat_history.
+
 Returns: A GPT-generated response along with updated chat history.
 
 /search
 
 Accepts: JSON with query, optional max_price, and file_path.
+
 Returns: Top matching products from the catalog.
 
 **Requirements**
@@ -123,6 +132,7 @@ This project requires Python 3.7+ and the following Python libraries:
     ipywidgets>=7.6.5
 
 Install these with:
+
     bash
     pip install -r requirements.txt
     Tip: After confirming everything works, you can pin exact versions using pip freeze > requirements.txt.
